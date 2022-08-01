@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./SUPG Julius/mailer_gecco_2021-main/hexapod"
+    ]
+}
