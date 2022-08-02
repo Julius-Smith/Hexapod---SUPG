@@ -14,7 +14,7 @@ tripod_gait = [	0.15, 0, 0.05, 0.5, 0.5, # leg 1
 
 class SUPGController:
 
-    def __init__(self, cppn, params=tripod_gait, body_height=0.4, period=1.0, velocity=0.46, crab_angle=0.0, dt=1/240):
+    def __init__(self, cppn, params=tripod_gait, body_height=0.15, period=1.0, velocity=0.46, crab_angle=0.0, dt=1/240):
 
         # link lengths
         self.l_1 = 0.05317
@@ -79,7 +79,7 @@ class SUPGController:
         offset = 0
         inputs = []
         inputs.append(0)
-        inputs.append(neuron.getYPos()/50) #uses y angle to ensure all servos on same leg move at same time
+        inputs.append(neuron.getYPos())#/50) #uses y angle to ensure all servos on same leg move at same time
         inputs.append(0)
     
         activation = self.cppn.activate(inputs)
@@ -134,13 +134,15 @@ class SUPGController:
             return NewValue
             
     #query each supg for output, cache output in an array, then output angles to correct joints
-    def joint_angles(self, t):
-
+    def joint_angles(self, contact, t):
         outputs = []
 
+        #set up initial stnading position
         if t == 0:
             return self.initialOutputs
         else:
+            #list of tibia links touching the ground
+           # if(len(arrGround) > 0):
             #set timer to offset to kickstart legs/avoid pronk
             #legs where offset == true , remain at T zero
             if(self.firstStep == False):
@@ -148,6 +150,18 @@ class SUPGController:
                     if self.getOffset(neuron) == True: #has an offset
                         neuron.setTimeCounter(1.1) # set value outside of reference range. i.e., won't fire on first time step
                 self.firstStep = True
+            #if first step is completele, use triggers 
+            
+            else:
+                if len(contact) > 0:
+                    i = 0
+                    #where a leg is touching the ground, restart timer to 0
+                for val in contact:
+                    if val == True:
+                        self.neuronList[i].setTimeCounter(0)
+                        self.neuronList[i+1].setTimeCounter(0)
+                    i +=2
+
 
          #only need SUPG output for neurons with timer above zero... i.e, legs with offset outside of value wont move on initial time step
             for neuron in self.neuronList:
@@ -169,7 +183,7 @@ class SUPGController:
             #adding tibia output, which remains constant
             i = 2
             while i <= len(outputs):
-                outputs.insert(i, -1.487756)
+                outputs.insert(i, -outputs[i-1] -1.3962634)
                 i += (2+1)
 
             return np.array(outputs)

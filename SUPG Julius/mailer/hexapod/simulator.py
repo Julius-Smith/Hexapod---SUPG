@@ -95,7 +95,7 @@ class Simulator:
 
 	# set joints to their initial positions
 	def __init_joints(self, controller, joints, locked_joints):
-		joint_angles = controller.joint_angles(t=0)
+		joint_angles = controller.joint_angles([], t=0)
 		for index, joint in enumerate(joints):
 			joint_angle = joint_angles[index]
 			joint_index, lower_limit, upper_limit, max_torque, max_speed = joint
@@ -184,7 +184,8 @@ class Simulator:
         """
 		start_time = time.perf_counter()
 		# using setJointMotorControl2 (slightly slower but allows setting of max velocity)
-		joint_angles = self.controller.joint_angles(t=self.t)
+		contact = self.supporting_legs()
+		joint_angles = self.controller.joint_angles(contact, t=self.t)
 
 		for index, joint_properties in enumerate(self.joints):
 			joint_index, lower_limit, upper_limit, max_torque, max_speed = joint_properties
