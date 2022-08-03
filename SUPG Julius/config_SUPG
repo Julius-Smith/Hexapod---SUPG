@@ -4,14 +4,15 @@
 [NEAT]
 fitness_criterion     = max
 fitness_threshold     = 3.9
-pop_size              = 50
+pop_size              = 20
 reset_on_extinction   = False
+
 
 [DefaultGenome]
 # node activation options
 activation_default      = random
 activation_mutate_rate  = 0.01
-activation_options      = sigmoid gauss sin identity
+activation_options      = sigmoid gauss sin clamped bisig
 
 # node aggregation options
 aggregation_default     = sum
@@ -48,7 +49,7 @@ node_delete_prob        = 0.05
 
 # network parameters
 num_hidden              = 0
-num_inputs              = 3
+num_inputs              = 14
 num_outputs             = 2
 
 # node response options

@@ -36,9 +36,13 @@ class SUPGController:
         self.initialOutputs = []
 
         for i in range(6):
+            #all three servos
             self.initialOutputs.append(0)
             self.initialOutputs.append(0.8994219)
             self.initialOutputs.append(-1.487756)
+            #just the supgs for caching output
+            self.supgOutputs.append(0)
+            self.supgOutputs.append(0.8994219)
 
     def setCoordinates(self):
         #create nodes
@@ -81,7 +85,11 @@ class SUPGController:
         inputs.append(0)
         inputs.append(neuron.getYPos())#/50) #uses y angle to ensure all servos on same leg move at same time
         inputs.append(0)
-    
+        #append 0 for all other supgs
+        for i in range(11):
+            inputs.append(0)
+
+
         activation = self.cppn.activate(inputs)
         offset = (activation[1] + 1)
       
@@ -91,11 +99,19 @@ class SUPGController:
             return True
         
     ##return output of individual 
-    def getSUPGActivation(self, neuron):
+    def getSUPGActivation(self, neuron, cachedOutputs):
         coordinates = []
         coordinates.append(neuron.getXPos())
         coordinates.append(neuron.getYPos())
         coordinates.append(neuron.getTimeCounter() / self.wavelength) 
+        pos = 0
+        for output in cachedOutputs:
+            if neuron.ID() == pos:
+                pos +=1
+                continue
+            else:
+                coordinates.append(output)
+            pos +=1
 
         activation = self.cppn.activate(coordinates)
 
@@ -141,8 +157,7 @@ class SUPGController:
         if t == 0:
             return self.initialOutputs
         else:
-            #list of tibia links touching the ground
-           # if(len(arrGround) > 0):
+    
             #set timer to offset to kickstart legs/avoid pronk
             #legs where offset == true , remain at T zero
             if(self.firstStep == False):
@@ -151,7 +166,6 @@ class SUPGController:
                         neuron.setTimeCounter(1.1) # set value outside of reference range. i.e., won't fire on first time step
                 self.firstStep = True
             #if first step is completele, use triggers 
-            
             else:
                 if len(contact) > 0:
                     i = 0
@@ -167,7 +181,7 @@ class SUPGController:
             for neuron in self.neuronList:
                 if(neuron.getTimeCounter() >=0 and neuron.getTimeCounter() <=1):
                     #rescale output within range for each type of joint
-                    output = self.reshapeServoOutput(neuron, self.getSUPGActivation(neuron))
+                    output = self.reshapeServoOutput(neuron, self.getSUPGActivation(neuron, self.supgOutputs))
                     outputs.append(output)
                 else:
                     #if leg is not ready to move due to offset, keep value at stationary gait value.
