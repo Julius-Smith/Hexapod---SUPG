@@ -37,7 +37,7 @@ def evaluate_gaitP(genome, config):
             return 0#, np.zeros(6)
             
         # Initialise Simulator
-        simulator = Simulator(controller=controller, visualiser=False, collision_fatal=True)
+        simulator = Simulator(controller=controller, visualiser=False, collision_fatal=False)
         # Step in simulator
         for t in np.arange(0, 5, step=simulator.dt):
             try:
