@@ -35,7 +35,7 @@ def evaluate_gaitP(genome, config):
            controller = SUPGController(cppn)
         except:
             print('lmao')
-            return 0#, np.zeros(6)
+            #return 0#, np.zeros(6)
             
         # Initialise Simulator
         simulator = Simulator(controller=controller, visualiser=False, collision_fatal=False)
