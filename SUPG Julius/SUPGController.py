@@ -86,8 +86,8 @@ class SUPGController:
         inputs.append(neuron.getYPos())#/50) #uses y angle to ensure all servos on same leg move at same time
         inputs.append(0)
         #append 0 for all other supgs
-        # for i in range(12):
-        #     inputs.append(0)
+        for i in range(12):
+            inputs.append(0)
 
 
         activation = self.cppn.activate(inputs)
@@ -105,14 +105,14 @@ class SUPGController:
         coordinates.append(neuron.getYPos())
         coordinates.append(neuron.getTimeCounter() / self.wavelength) 
         pos = 0
-       # for output in cachedOutputs:
-        #    if neuron.ID() == pos:
-         #       pos +=1
-          #      coordinates.append(0)
-           #     continue
-            #else:
-             #   coordinates.append(output)
-            #pos +=1
+        for output in cachedOutputs:
+            if neuron.ID() == pos:
+               pos +=1
+               coordinates.append(0)
+               continue
+            else:
+               coordinates.append(output)
+            pos +=1
 
         activation = self.cppn.activate(coordinates)
 
