@@ -1,10 +1,4 @@
 # Neuron Object - Represents and Individual SUPG
-
-from mimetypes import init
-
-from zmq import NULL
-
-
 class sNeuron(object):
     
     def __init__(self, neuronID):

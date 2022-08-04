@@ -185,6 +185,7 @@ class Simulator:
 		start_time = time.perf_counter()
 		# using setJointMotorControl2 (slightly slower but allows setting of max velocity)
 		contact = self.supporting_legs()
+
 		joint_angles = self.controller.joint_angles(contact, t=self.t)
 
 		for index, joint_properties in enumerate(self.joints):

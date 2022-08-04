@@ -8,7 +8,7 @@ import pickle
 #configure neat for the SUPG CPPN
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                      neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                     r'C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\config_SUPG')
+                     'config_SUPG')
 def bipolarSig(x):
     return (1 - np.exp(-x)) / (1 + np.exp(-x))
 
@@ -99,7 +99,7 @@ def run(gens):
 
 if __name__ == "__main__":
 
-    winner = run(5)
+    winner = run(1000)
     
     #create network with winning genome
     winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
@@ -107,13 +107,14 @@ if __name__ == "__main__":
     leg_params = np.array(tripod_gait).reshape(6, 5)
 
 
+
     with open('SUPG_xor_cppn.pkl', 'wb') as output:
         pickle.dump(winner_net, output, pickle.HIGHEST_PROTOCOL)
         
     #draw_net(winner_net, filename="SUPG_xor_cppn")
     #set up final controller and feed into sim
-    controller = SUPGController(winner_net)
-    simulator = Simulator(controller, follow=True, visualiser=True, collision_fatal=False, failed_legs=[])
+    #controller = SUPGController(winner_net)
+    #simulator = Simulator(controller, follow=True, visualiser=True, collision_fatal=False, failed_legs=[])
 
     # run indefinitely
     #while True:
