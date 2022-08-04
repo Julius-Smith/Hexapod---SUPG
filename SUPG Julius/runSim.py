@@ -15,6 +15,16 @@ def bipolarSig(x):
 
 config.genome_config.add_activation('bisig', bipolarSig)
 
+# radius, offset, step_height, phase, duty_factor
+tripod_gait = [	0.15, 0, 0.05, 0.5, 0.5, # leg 1
+				0.15, 0, 0.05, 0.0, 0.5, # leg 2
+				0.15, 0, 0.05, 0.5, 0.5, # leg 3
+				0.15, 0, 0.05, 0.0, 0.5, # leg 4
+				0.15, 0, 0.05, 0.5, 0.5, # leg 5
+				0.15, 0, 0.05, 0.0, 0.5] # leg 6
+leg_params = np.array(tripod_gait).reshape(6, 5)
+
+
 #read in pickl
 with open("SUPG_xor_cppn.pkl", 'rb') as f:
     CPPN = pickle.load(f)
