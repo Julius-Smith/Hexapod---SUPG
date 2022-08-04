@@ -8,7 +8,7 @@ import multiprocessing
 #configure neat for the SUPG CPPN
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                      neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                     r'C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\config_SUPG')  #C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\config_SUPG
+                     'config_SUPG')  #C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\config_SUPG
 def bipolarSig(x):
     return (1 - np.exp(-x)) / (1 + np.exp(-x))
 
