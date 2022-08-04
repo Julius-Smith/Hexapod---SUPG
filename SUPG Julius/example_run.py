@@ -34,8 +34,8 @@ def evaluate_gaitP(genome, config):
         try:
            controller = SUPGController(cppn)
         except:
-            print('lmao')
-            #return 0#, np.zeros(6)
+            
+            return 0#, np.zeros(6)
             
         # Initialise Simulator
         simulator = Simulator(controller=controller, visualiser=False, collision_fatal=False)
@@ -44,7 +44,8 @@ def evaluate_gaitP(genome, config):
             try:
                 simulator.step()
             except RuntimeError as collision:
-                return 0#, np.zeros(6)
+
+                return "lmao youre fucked" #0#, np.zeros(6)
 
         fitness = simulator.base_pos()[0]  # distance travelled along x axis
         # Terminate Simulator
