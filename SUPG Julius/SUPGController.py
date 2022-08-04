@@ -86,7 +86,7 @@ class SUPGController:
         inputs.append(neuron.getYPos())#/50) #uses y angle to ensure all servos on same leg move at same time
         inputs.append(0)
         #append 0 for all other supgs
-        for i in range(11):
+        for i in range(12):
             inputs.append(0)
 
 
@@ -108,6 +108,7 @@ class SUPGController:
         for output in cachedOutputs:
             if neuron.ID() == pos:
                 pos +=1
+                coordinates.append(0)
                 continue
             else:
                 coordinates.append(output)
