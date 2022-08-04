@@ -4,7 +4,7 @@ import neat
 import neat.nn
 import numpy as np
 import pickle
-
+import multiprocessing
 #configure neat for the SUPG CPPN
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                      neat.DefaultSpeciesSet, neat.DefaultStagnation,
@@ -88,7 +88,7 @@ def run(gens):
 
 
     ## running in parallel
-    pe =  neat.ParallelEvaluator(4, evaluate_gaitP)
+    pe =  neat.ParallelEvaluator(multiprocessing.cpu_count(), evaluate_gaitP)
 
     # Run until a solution is found.
     #winner = p.run(evaluate_gait, gens)
@@ -99,7 +99,7 @@ def run(gens):
 
 if __name__ == "__main__":
 
-    winner = run(2)
+    winner = run(1000)
     
     #create network with winning genome
     winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
