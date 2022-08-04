@@ -8,7 +8,7 @@ import multiprocessing
 #configure neat for the SUPG CPPN
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                      neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                     'config_SUPG')
+                     r'C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\config_SUPG')  #C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\config_SUPG
 def bipolarSig(x):
     return (1 - np.exp(-x)) / (1 + np.exp(-x))
 
@@ -45,7 +45,7 @@ def evaluate_gaitP(genome, config):
                 simulator.step()
             except RuntimeError as collision:
 
-                return "lmao youre fucked" #0#, np.zeros(6)
+                return 0#, np.zeros(6)
 
         fitness = simulator.base_pos()[0]  # distance travelled along x axis
         # Terminate Simulator

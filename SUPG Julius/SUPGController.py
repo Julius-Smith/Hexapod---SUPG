@@ -1,5 +1,6 @@
 #SUPG Controller Class
 
+import copy
 import math
 from sNeuron import sNeuron
 import numpy as np
@@ -193,7 +194,7 @@ class SUPGController:
 
             self.update()
 
-            self.supgOutputs = outputs # caching outputs for later use when coupling            
+            self.supgOutputs = copy.deepcopy(outputs) # caching outputs for later use when coupling            
 
             #adding tibia output, which remains constant
             i = 2
