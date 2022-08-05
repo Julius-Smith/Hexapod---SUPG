@@ -8,7 +8,7 @@ import multiprocessing
 #configure neat for the SUPG CPPN
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                      neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                     'config_SUPG')  #C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\config_SUPG
+                     r'C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\config_SUPG')  #C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\config_SUPG
 def bipolarSig(x):
     return (1 - np.exp(-x)) / (1 + np.exp(-x))
 
@@ -101,7 +101,7 @@ def run(gens):
 
 if __name__ == "__main__":
 
-    winner = run(60)
+    winner = run(1)
     
     #create network with winning genome
     winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
@@ -110,7 +110,7 @@ if __name__ == "__main__":
 
 
 
-    with open('SUPG_xor_cppn.pkl', 'wb') as output:
+    with open('SUPG_xor_cppn1.pkl', 'wb') as output:
         pickle.dump(winner_net, output, pickle.HIGHEST_PROTOCOL)
         
     #draw_net(winner_net, filename="SUPG_xor_cppn")
