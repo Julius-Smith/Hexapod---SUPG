@@ -103,7 +103,7 @@ def run(gens):
 
 if __name__ == "__main__":
 
-    winner = run(25)
+    winner = run(40)
     
     #create network with winning genome
     winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
@@ -112,10 +112,10 @@ if __name__ == "__main__":
 
 
 
-    with open('SUPG_xor_cppn3.pkl', 'wb') as output:
+    with open('SUPG_xor_cppn4.pkl', 'wb') as output:
         pickle.dump(winner_net, output, pickle.HIGHEST_PROTOCOL)
         
-    visualize.draw_net(winner_net, filename="SUPG_xor_cppn")
+    visualize.draw_net(config, winner_net, filename="SUPG_xor_cppn_attemp1")
     #set up final controller and feed into sim
     #controller = SUPGController(winner_net)
     #simulator = Simulator(controller, follow=True, visualiser=True, collision_fatal=False, failed_legs=[])
