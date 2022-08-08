@@ -5,10 +5,12 @@ import neat.nn
 import numpy as np
 import pickle
 import multiprocessing
+import visualize
+
 #configure neat for the SUPG CPPN
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                      neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                     r'C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\config_SUPG')  #C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\config_SUPG
+                     r'config_SUPG')  #C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\config_SUPG
 def bipolarSig(x):
     return (1 - np.exp(-x)) / (1 + np.exp(-x))
 
@@ -101,7 +103,7 @@ def run(gens):
 
 if __name__ == "__main__":
 
-    winner = run(1)
+    winner = run(25)
     
     #create network with winning genome
     winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
@@ -110,10 +112,10 @@ if __name__ == "__main__":
 
 
 
-    with open('SUPG_xor_cppn1.pkl', 'wb') as output:
+    with open('SUPG_xor_cppn3.pkl', 'wb') as output:
         pickle.dump(winner_net, output, pickle.HIGHEST_PROTOCOL)
         
-    #draw_net(winner_net, filename="SUPG_xor_cppn")
+    visualize.draw_net(winner_net, filename="SUPG_xor_cppn")
     #set up final controller and feed into sim
     #controller = SUPGController(winner_net)
     #simulator = Simulator(controller, follow=True, visualiser=True, collision_fatal=False, failed_legs=[])
