@@ -113,7 +113,7 @@ if __name__ == "__main__":
 
 
 
-    with open('SUPG_xor_cppn7.pkl', 'wb') as output:
+    with open('SUPG_xor_cppn8.pkl', 'wb') as output:
         pickle.dump(winner_net, output, pickle.HIGHEST_PROTOCOL)
         
     #visualize.draw_net(config, winner_net, filename="SUPG_xor_cppn_attemp1")

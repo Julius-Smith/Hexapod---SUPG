@@ -81,7 +81,7 @@ class SUPGController:
     #offsets are discarded after 1st step
     def getOffset(self, neuron):
         #potentially use compression value for x position
-        self.cppn.reset()
+        #self.cppn.reset()
         offset = 0
         inputs = []
         inputs.append(0)
@@ -102,7 +102,7 @@ class SUPGController:
         
     ##return output of individual 
     def getSUPGActivation(self, neuron, cachedOutputs):
-        self.cppn.reset()
+        #self.cppn.reset()
         coordinates = []
         coordinates.append(neuron.getXPos())
         coordinates.append(neuron.getYPos())
