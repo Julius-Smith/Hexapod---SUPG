@@ -104,7 +104,7 @@ def run(gens):
 
 if __name__ == "__main__":
 
-    winner = run(15)
+    winner = run(400)
     
     #create network with winning genome
     winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
