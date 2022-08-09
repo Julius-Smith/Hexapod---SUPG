@@ -27,8 +27,8 @@ tripod_gait = [	0.15, 0, 0.05, 0.5, 0.5, # leg 1
 #parralel implementation
 def evaluate_gaitP(genome, config):
      # Create CPPN from Genome and configuration file
-        #cppn = neat.nn.FeedForwardNetwork.create(genome, config)
-        cppn = neat.nn.RecurrentNetwork.create(genome,config)
+        cppn = neat.nn.FeedForwardNetwork.create(genome, config)
+        #cppn = neat.nn.RecurrentNetwork.create(genome,config)
         
         
         leg_params = np.array(tripod_gait).reshape(6, 5)
@@ -104,16 +104,16 @@ def run(gens):
 
 if __name__ == "__main__":
 
-    winner = run(10)
+    winner = run(15)
     
     #create network with winning genome
-    winner_net = neat.nn.RecurrentNetwork.create(winner, config)
+    winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
 
     leg_params = np.array(tripod_gait).reshape(6, 5)
 
 
 
-    with open('SUPG_xor_cppn8.pkl', 'wb') as output:
+    with open('SUPG_xor_cppn9.pkl', 'wb') as output:
         pickle.dump(winner_net, output, pickle.HIGHEST_PROTOCOL)
         
     #visualize.draw_net(config, winner_net, filename="SUPG_xor_cppn_attemp1")
