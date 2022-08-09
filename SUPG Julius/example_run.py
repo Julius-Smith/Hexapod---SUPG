@@ -104,16 +104,16 @@ def run(gens):
 
 if __name__ == "__main__":
 
-    winner = run(25)
+    winner = run(1)
     
     #create network with winning genome
-    winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
+    winner_net = neat.nn.RecurrentNetwork.create(winner, config)
 
     leg_params = np.array(tripod_gait).reshape(6, 5)
 
 
 
-    with open('SUPG_xor_cppn5.pkl', 'wb') as output:
+    with open('SUPG_xor_cppn6.pkl', 'wb') as output:
         pickle.dump(winner_net, output, pickle.HIGHEST_PROTOCOL)
         
     #visualize.draw_net(config, winner_net, filename="SUPG_xor_cppn_attemp1")

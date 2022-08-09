@@ -9,7 +9,7 @@ import multiprocessing
 
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                      neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                     r'C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\config_SUPG')  #C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\config_SUPG
+                     r'C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\config_SUPG')  #C:\Users\Dell\Documents\Shared Folder\Hexapod---SUPG\SUPG Julius\config_SUPG
 def bipolarSig(x):
     return (1 - np.exp(-x)) / (1 + np.exp(-x))
 
@@ -26,7 +26,7 @@ leg_params = np.array(tripod_gait).reshape(6, 5)
 
 
 #read in pickl
-with open(r"C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\SUPG_xor_cppn4.pkl", 'rb') as f:
+with open(r"C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\SUPG_xor_cppn5.pkl", 'rb') as f:
     CPPN = pickle.load(f)
 
 #set up final controller and feed into sim
