@@ -104,7 +104,7 @@ def run(gens):
 
 if __name__ == "__main__":
 
-    winner = run(1)
+    winner = run(10)
     
     #create network with winning genome
     winner_net = neat.nn.RecurrentNetwork.create(winner, config)
@@ -113,7 +113,7 @@ if __name__ == "__main__":
 
 
 
-    with open('SUPG_xor_cppn6.pkl', 'wb') as output:
+    with open('SUPG_xor_cppn7.pkl', 'wb') as output:
         pickle.dump(winner_net, output, pickle.HIGHEST_PROTOCOL)
         
     #visualize.draw_net(config, winner_net, filename="SUPG_xor_cppn_attemp1")
