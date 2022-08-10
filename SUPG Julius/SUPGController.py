@@ -171,7 +171,7 @@ class SUPGController:
                         #neuron.setTimeCounter(1.1) # set value outside of reference range. i.e., won't fire on first time step
                 self.firstStep = True
             #if first step is completele, use triggers 
-            else:
+            #else:
                 # if len(contact) > 0:
                 #     i = 0
                 #     #where a leg is touching the ground, restart timer to 0
