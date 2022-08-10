@@ -132,7 +132,7 @@ class SUPGController:
             if neuron.getTimeCounter() >= 1:
                 neuron.setTimeCounter(0)
             elif neuron.getTimeCounter() >=0 and neuron.getTimeCounter() < 1:
-                neuron.setTimeCounter((neuron.getTimeCounter() + 1/240))
+                neuron.setTimeCounter((neuron.getTimeCounter() + (1/240)))
     
     def IMU_feedback(self, measured_attitude):
             return
