@@ -96,9 +96,9 @@ class SUPGController:
         offset = (activation[1] + 1)
       
         if (offset >= 0 and offset <=1 ):
-            return False
+            return offset #return false
         else:
-            return True
+            return  1 #return true
         
     ##return output of individual 
     def getSUPGActivation(self, neuron, cachedOutputs):
@@ -166,8 +166,9 @@ class SUPGController:
             #legs where offset == true , remain at T zero
             if(self.firstStep == False):
                 for neuron in self.neuronList:
-                    if self.getOffset(neuron) == True: #has an offset
-                        neuron.setTimeCounter(1.1) # set value outside of reference range. i.e., won't fire on first time step
+                    neuron.setTimeCounter(self.getOffset(neuron))
+                    #if self.getOffset(neuron) == True: #has an offset
+                        #neuron.setTimeCounter(1.1) # set value outside of reference range. i.e., won't fire on first time step
                 self.firstStep = True
             #if first step is completele, use triggers 
             else:

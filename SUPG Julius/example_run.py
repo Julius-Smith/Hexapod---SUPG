@@ -12,10 +12,10 @@ import sys
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                      neat.DefaultSpeciesSet, neat.DefaultStagnation,
                      r'config_SUPG')  #C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\config_SUPG
-def bipolarSig(x):
-    return (1 - np.exp(-x)) / (1 + np.exp(-x))
+# def bipolarSig(x):
+#     return (1 - np.exp(-x)) / (1 + np.exp(-x))
 
-config.genome_config.add_activation('bisig', bipolarSig)
+# config.genome_config.add_activation('bisig', bipolarSig)
 
 # radius, offset, step_height, phase, duty_factor
 tripod_gait = [	0.15, 0, 0.05, 0.5, 0.5, # leg 1
@@ -121,7 +121,7 @@ if __name__ == "__main__":
             os.mkdir("Output/CPPNS")
 
     numRuns = int(sys.argv[1])
-    fileNumber = (sys.argv[2])
+    fileNumber =  (sys.argv[2])
     winner, stats = run(numRuns)
     
 
@@ -135,18 +135,9 @@ if __name__ == "__main__":
 
 
 
-    with open('SUPG_xor_cppn_mikeRun.pkl', 'wb') as output:
+    with open('Pickles/SUPG_xor_cppn_test' + fileNumber + '.pkl', 'wb') as output:
         pickle.dump(winner_net, output, pickle.HIGHEST_PROTOCOL)
         
     
     vz.draw_net(config, winner
     , filename="Output/graphs/NEATWINNER" + fileNumber)
-
-    #visualize.draw_net(config, winner_net, filename="SUPG_xor_cppn_attemp1")
-    #set up final controller and feed into sim
-    #controller = SUPGController(winner_net)
-    #simulator = Simulator(controller, follow=True, visualiser=True, collision_fatal=False, failed_legs=[])
-
-    # run indefinitely
-    #while True:
-    #    simulator.step()
