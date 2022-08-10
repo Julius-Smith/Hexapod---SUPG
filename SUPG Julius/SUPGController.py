@@ -132,7 +132,7 @@ class SUPGController:
             if neuron.getTimeCounter() >= 1:
                 neuron.setTimeCounter(0)
             elif neuron.getTimeCounter() >=0 and neuron.getTimeCounter() < 1:
-                neuron.setTimeCounter((neuron.getTimeCounter() + (10/100)))
+                neuron.setTimeCounter((neuron.getTimeCounter() + (1/100)))
     
     def IMU_feedback(self, measured_attitude):
             return
@@ -171,15 +171,15 @@ class SUPGController:
                         #neuron.setTimeCounter(1.1) # set value outside of reference range. i.e., won't fire on first time step
                 self.firstStep = True
             #if first step is completele, use triggers 
-            else:
-                if len(contact) > 0:
-                    i = 0
-                    #where a leg is touching the ground, restart timer to 0
-                for val in contact:
-                    if val == True:
-                        self.neuronList[i].setTimeCounter(1)
-                        self.neuronList[i+1].setTimeCounter(1)
-                    i +=2
+            # else:
+            #     if len(contact) > 0:
+            #         i = 0
+            #         #where a leg is touching the ground, restart timer to 0
+            #     for val in contact:
+            #         if val == True:
+            #             self.neuronList[i].setTimeCounter(1)
+            #             self.neuronList[i+1].setTimeCounter(1)
+            #         i +=2
 
 
          #only need SUPG output for neurons with timer above zero... i.e, legs with offset outside of value wont move on initial time step
