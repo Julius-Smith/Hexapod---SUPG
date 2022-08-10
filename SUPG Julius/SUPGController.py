@@ -106,7 +106,7 @@ class SUPGController:
         coordinates = []
         coordinates.append(neuron.getXPos())
         coordinates.append(neuron.getYPos())
-        coordinates.append(neuron.getTimeCounter() / self.wavelength) 
+        coordinates.append(neuron.getTimeCounter()) 
         pos = 0
         for output in cachedOutputs:
             if neuron.ID() == pos:
