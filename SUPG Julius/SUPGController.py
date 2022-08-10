@@ -143,13 +143,13 @@ class SUPGController:
             NewValue = 0
             if(neuron.ID() % 2 == 0):
                 OldRange = (1 - 0)  
-                NewRange = (1.7453-(-.17453))#(0.90724405 - (-0.906256))  #1.74533
-                NewValue = (((output - 0) * NewRange) / OldRange) + (-1.7453)#(-0.906256)
+                NewRange = (0.90724405 - (-0.906256))  #1.74533
+                NewValue = (((output - 0) * NewRange) / OldRange) + (-0.906256)
             #femur
             else:
                 OldRange = (1 - 0)  
-                NewRange = (2.26893 - (-2.61799))#(0.64 - (-0.2))   # 2.26893 -2.61799
-                NewValue = (((output - 0) * NewRange) / OldRange) + (-2.61799)#(-0.2)
+                NewRange = (0.64 - (-0.2))   # 2.26893 -2.61799
+                NewValue = (((output - 0) * NewRange) / OldRange) + (-0.2)
 
             return NewValue
             
