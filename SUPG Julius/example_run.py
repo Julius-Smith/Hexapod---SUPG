@@ -107,27 +107,27 @@ def run(gens):
 
 if __name__ == "__main__":
 
-    if not os.path.exists("SUPG Julius/Output"):
-        os.mkdir("SUPG Julius/Output")
-        if not os.path.exists("SUPG Julius/Output/genomeFitness"):
-            os.mkdir("SUPG Julius/Output/genomeFitness")
-        if not os.path.exists("SUPG Julius/Output/graphs"):
-            os.mkdir("SUPG Julius/Output/graphs")
-        if not os.path.exists("SUPG Julius/Output/bestGenomes"):
-            os.mkdir("SUPG Julius/Output/bestGenomes")
-        if not os.path.exists("SUPG Julius/Output/stats"):
-            os.mkdir("SUPG Julius/Output/stats")
-        if not os.path.exists("SUPG Julius/Output/CPPNS"):
-            os.mkdir("SUPG Julius/Output/CPPNS")
+    if not os.path.exists("Output"):
+        os.mkdir("Output")
+        if not os.path.exists("Output/genomeFitness"):
+            os.mkdir("Output/genomeFitness")
+        if not os.path.exists("Output/graphs"):
+            os.mkdir("Output/graphs")
+        if not os.path.exists("Output/bestGenomes"):
+            os.mkdir("Output/bestGenomes")
+        if not os.path.exists("Output/stats"):
+            os.mkdir("Output/stats")
+        if not os.path.exists("Output/CPPNS"):
+            os.mkdir("Output/CPPNS")
 
     numRuns = int(sys.argv[1])
     fileNumber =  (sys.argv[2])
     winner, stats = run(numRuns)
     
 
-    stats.save_genome_fitness(delimiter=',', filename='SUPG Julius/Output/genomeFitness/FitnessHistory' + fileNumber + '.csv')
-    vz.plot_stats(stats, ylog=False, view=True, filename='SUPG Julius/Output/graphs/AverageFitness' + fileNumber + '.svg')
-    vz.plot_species(stats, view=True, filename='SUPG Julius/Output/graphs/Speciation' + fileNumber + '.svg')
+    stats.save_genome_fitness(delimiter=',', filename='Output/genomeFitness/FitnessHistory' + fileNumber + '.csv')
+    vz.plot_stats(stats, ylog=False, view=True, filename='Output/graphs/AverageFitness' + fileNumber + '.svg')
+    vz.plot_species(stats, view=True, filename='Output/graphs/Speciation' + fileNumber + '.svg')
     #create network with winning genome
     winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
 
@@ -135,9 +135,9 @@ if __name__ == "__main__":
 
 
 
-    with open('SUPG Julius/Pickles/SUPG_xor_cppn_test' + fileNumber + '.pkl', 'wb') as output:
+    with open('Pickles/SUPG_xor_cppn_test' + fileNumber + '.pkl', 'wb') as output:
         pickle.dump(winner_net, output, pickle.HIGHEST_PROTOCOL)
         
     
     vz.draw_net(config, winner
-    , filename="SUPG Julius/Output/graphs/NEATWINNER" + fileNumber)
+    , filename="Output/graphs/NEATWINNER" + fileNumber)
