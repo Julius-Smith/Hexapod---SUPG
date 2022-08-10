@@ -32,7 +32,7 @@ class Simulator:
     """
 	def __init__(self, controller, urdf='/urdf/hexapod_simplified.urdf', visualiser=False, follow=True, collision_fatal=True, failed_legs=[], camera_position=[0, 0, 0], camera_distance=0.7, camera_yaw=20, camera_pitch=-30):
 		self.t = 0 #: float: Current time of the simulator
-		self.dt = 0.015#1.0/240.0  #: float: Timestep of simulator. Default is 1/240s for PyBullet.
+		self.dt = 1.0/240.0  #: float: Timestep of simulator. Default is 1/240s for PyBullet.
 		self.n_step = 0
 		self.gravity = -9.81 #: float: Magnitude of gravity vector in the positive z direction
 		self.foot_friction = 0.7
