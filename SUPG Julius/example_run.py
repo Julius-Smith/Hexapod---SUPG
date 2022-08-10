@@ -5,8 +5,9 @@ import neat.nn
 import numpy as np
 import pickle
 import multiprocessing
-import visualize
-
+import visualize as vz
+import os
+import sys
 #configure neat for the SUPG CPPN
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                      neat.DefaultSpeciesSet, neat.DefaultStagnation,
@@ -87,7 +88,9 @@ def evaluate_gait(genomes, config, duration=5):
 def run(gens):
     # Create the population, which is the top-level object for a NEAT run.
     p = neat.Population(config)
-
+    
+    stats = neat.statistics.StatisticsReporter()
+    p.add_reporter(stats)
     # Add a stdout reporter to show progress in the terminal.
     p.add_reporter(neat.StdOutReporter(False))
 
@@ -99,13 +102,32 @@ def run(gens):
     #winner = p.run(evaluate_gait, gens)
 
     winner = p.run(pe.evaluate, gens)
-    return winner
+    return winner, stats
 
 
 if __name__ == "__main__":
 
-    winner = run(400)
+    if not os.path.exists("Output"):
+        os.mkdir("Output")
+        if not os.path.exists("Output/genomeFitness"):
+            os.mkdir("Output/genomeFitness")
+        if not os.path.exists("Output/graphs"):
+            os.mkdir("Output/graphs")
+        if not os.path.exists("Output/bestGenomes"):
+            os.mkdir("Output/bestGenomes")
+        if not os.path.exists("Output/stats"):
+            os.mkdir("Output/stats")
+        if not os.path.exists("Output/CPPNS"):
+            os.mkdir("Output/CPPNS")
+
+    numRuns = int(sys.argv[1])
+    fileNumber = (sys.argv[2])
+    winner, stats = run(numRuns)
     
+
+    stats.save_genome_fitness(delimiter=',', filename='Output/genomeFitness/FitnessHistory' + fileNumber + '.csv')
+    vz.plot_stats(stats, ylog=False, view=True, filename='Output/graphs/AverageFitness' + fileNumber + '.svg')
+    vz.plot_species(stats, view=True, filename='Output/graphs/Speciation' + fileNumber + '.svg')
     #create network with winning genome
     winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
 
@@ -113,9 +135,13 @@ if __name__ == "__main__":
 
 
 
-    with open('SUPG_xor_cppn10.pkl', 'wb') as output:
+    with open('SUPG_xor_cppn_mikeRun.pkl', 'wb') as output:
         pickle.dump(winner_net, output, pickle.HIGHEST_PROTOCOL)
         
+    
+    vz.draw_net(config, winner
+    , filename="Output/graphs/NEATWINNER" + fileNumber)
+
     #visualize.draw_net(config, winner_net, filename="SUPG_xor_cppn_attemp1")
     #set up final controller and feed into sim
     #controller = SUPGController(winner_net)
