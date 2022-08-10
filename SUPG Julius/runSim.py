@@ -26,7 +26,7 @@ leg_params = np.array(tripod_gait).reshape(6, 5)
 
 
 #read in pickl
-with open(r"C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\Pickles\SUPG_xor_cppn_testPLS2.pkl", 'rb') as f:
+with open(r"C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\Pickles\SUPG_xor_cppn_testPLS3.pkl", 'rb') as f:
     CPPN = pickle.load(f)
 
 #set up final controller and feed into sim
