@@ -172,14 +172,14 @@ class SUPGController:
                 self.firstStep = True
             #if first step is completele, use triggers 
             else:
-                if len(contact) > 0:
-                    i = 0
-                    #where a leg is touching the ground, restart timer to 0
-                for val in contact:
-                    if val == True:
-                        self.neuronList[i].setTimeCounter(0)
-                        self.neuronList[i+1].setTimeCounter(0)
-                    i +=2
+                # if len(contact) > 0:
+                #     i = 0
+                #     #where a leg is touching the ground, restart timer to 0
+                # for val in contact:
+                #     if val == True:
+                #         self.neuronList[i].setTimeCounter(0)
+                #         self.neuronList[i+1].setTimeCounter(0)
+                #     i +=2
 
 
          #only need SUPG output for neurons with timer above zero... i.e, legs with offset outside of value wont move on initial time step

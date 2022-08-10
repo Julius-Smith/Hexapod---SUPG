@@ -139,5 +139,4 @@ if __name__ == "__main__":
         pickle.dump(winner_net, output, pickle.HIGHEST_PROTOCOL)
         
     
-    vz.draw_net(config, winner
-    , filename="Output/graphs/NEATWINNER" + fileNumber)
+    vz.draw_net(config, winner, filename="Output/graphs/NEATWINNER" + fileNumber)
