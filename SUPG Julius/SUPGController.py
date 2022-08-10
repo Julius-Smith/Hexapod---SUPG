@@ -177,8 +177,8 @@ class SUPGController:
                     #where a leg is touching the ground, restart timer to 0
                 for val in contact:
                     if val == True:
-                        self.neuronList[i].setTimeCounter(0)
-                        self.neuronList[i+1].setTimeCounter(0)
+                        self.neuronList[i].setTimeCounter(1)
+                        self.neuronList[i+1].setTimeCounter(1)
                     i +=2
 
 
