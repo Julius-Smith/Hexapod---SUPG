@@ -11,7 +11,7 @@ import sys
 #configure neat for the SUPG CPPN
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                      neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                     r'config_SUPG')  #C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\config_SUPG
+                     r'C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\config_SUPG')  #C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\SUPG Julius\config_SUPG
 # def bipolarSig(x):
 #     return (1 - np.exp(-x)) / (1 + np.exp(-x))
 
@@ -119,6 +119,8 @@ if __name__ == "__main__":
             os.mkdir("Output/stats")
         if not os.path.exists("Output/CPPNS"):
             os.mkdir("Output/CPPNS")
+    if not os.path.exists("Pickles"):
+        os.mkdir("Pickles")
 
     numRuns = int(sys.argv[1])
     fileNumber = (sys.argv[2])
