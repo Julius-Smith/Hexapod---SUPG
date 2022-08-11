@@ -120,8 +120,8 @@ if __name__ == "__main__":
         if not os.path.exists("Output/CPPNS"):
             os.mkdir("Output/CPPNS")
 
-    numRuns = int(sys.argv[1])
-    fileNumber =  (sys.argv[2])
+    numRuns = 10#int(sys.argv[1])
+    fileNumber = 'lol'# (sys.argv[2])
     winner, stats = run(numRuns)
     
 
