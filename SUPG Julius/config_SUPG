@@ -11,7 +11,7 @@ reset_on_extinction   = False
 [DefaultGenome]
 # node activation options
 activation_default      = random
-activation_mutate_rate  = 0.01
+activation_mutate_rate  = 0.05
 activation_options      = gauss sin clamped tanh
 
 # node aggregation options
@@ -48,7 +48,7 @@ node_add_prob           = 0.05
 node_delete_prob        = 0.05
 
 # network parameters
-num_hidden              = 0
+num_hidden              = 6
 num_inputs              = 15
 num_outputs             = 2
 
@@ -71,7 +71,7 @@ weight_mutate_rate      = 0.96
 weight_replace_rate     = 0.1
 
 [DefaultSpeciesSet]
-compatibility_threshold = 100.0
+compatibility_threshold = 8
 
 [DefaultStagnation]
 species_fitness_func = max
