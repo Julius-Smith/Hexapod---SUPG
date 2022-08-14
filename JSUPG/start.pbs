@@ -1,5 +1,4 @@
 #!/bin/bash
-
 #PBS -l select=1:ncpus=24:mpiprocs=24:nodetype=haswell_reg
 #PBS -P CSCI1142
 #PBS -q smp
@@ -7,11 +6,11 @@
 #PBS -o /mnt/lustre/users/jsmith1/job.out
 #PBS -e /mnt/lustre/users/jsmith1/job.err
 #PBS -m abe
-#PBS -M jsmith1@myuct.ac.za
-#PBS -N neat_f_5000
+#PBS -M smtjul022@myuct.ac.za
+#PBS -N lowerFreq_f_300
 
-#ulimit -s unlimited
+ulimit -s unlimited
 
-cd /mnt/lustre/users/jsmith1/Hexapod---SUPG/JSUPG
-#nproc=`cat $PBS_NODEFILE | wc -l`
-python3 /mnt/lustre/users/jsmith1/Hexapod---SUPG/JSUPG/example_run.py 5000 TEST0
+cd /mnt/lustre/users/jsmith1/Hexapod---SUPG/JSUPG/
+
+python3 example_run.py 300 LowerFreq

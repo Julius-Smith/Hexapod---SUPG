@@ -44,7 +44,7 @@ def evaluate_gaitP(genome, config):
         # Initialise Simulator
         simulator = Simulator(controller=controller, visualiser=False, collision_fatal=True)
         # Step in simulator
-        for t in np.arange(0, 5, step=simulator.dt):
+        for t in np.arange(0, 15, step=simulator.dt):
             try:
                 simulator.step()
             except RuntimeError as collision:
