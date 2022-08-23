@@ -29,8 +29,7 @@ tripod_gait = [	0.15, 0, 0.05, 0.5, 0.5, # leg 1
 def evaluate_gaitP(genome, config):
      # Create CPPN from Genome and configuration file
         cppn = neat.nn.FeedForwardNetwork.create(genome, config)
-        #cppn = neat.nn.RecurrentNetwork.create(genome,config)
-        
+        #cppn = neat.nn.RecurrentNetwork.create(genome,config)       
         
         leg_params = np.array(tripod_gait).reshape(6, 5)
 
@@ -44,7 +43,7 @@ def evaluate_gaitP(genome, config):
         # Initialise Simulator
         simulator = Simulator(controller=controller, visualiser=False, collision_fatal=True)
         # Step in simulator
-        for t in np.arange(0, 15, step=simulator.dt):
+        for t in np.arange(0, 5, step=simulator.dt):
             try:
                 simulator.step()
             except RuntimeError as collision:
@@ -61,8 +60,7 @@ def evaluate_gait(genomes, config, duration=5):
     for genome_id, genome in genomes:
         # Create CPPN from Genome and configuration file
         cppn = neat.nn.FeedForwardNetwork.create(genome, config)
-        
-        
+               
         leg_params = np.array(tripod_gait).reshape(6, 5)
 
         # Set up controller
@@ -125,7 +123,6 @@ if __name__ == "__main__":
     numRuns = int(sys.argv[1])
     fileNumber = (sys.argv[2])
     winner, stats = run(numRuns)
-    
 
     stats.save_genome_fitness(delimiter=',', filename='Output/genomeFitness/FitnessHistory' + fileNumber + '.csv')
     vz.plot_stats(stats, ylog=False, view=True, filename='Output/graphs/AverageFitness' + fileNumber + '.svg')
@@ -135,10 +132,7 @@ if __name__ == "__main__":
 
     leg_params = np.array(tripod_gait).reshape(6, 5)
 
-
-
     with open('Pickles/SUPG_xor_cppn_test' + fileNumber + '.pkl', 'wb') as output:
         pickle.dump(winner_net, output, pickle.HIGHEST_PROTOCOL)
         
-    
     vz.draw_net(config, winner, filename="Output/graphs/NEATWINNER" + fileNumber)

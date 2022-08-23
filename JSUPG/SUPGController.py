@@ -16,7 +16,6 @@ tripod_gait = [	0.15, 0, 0.05, 0.5, 0.5, # leg 1
 class SUPGController:
 
     def __init__(self, cppn, params=tripod_gait, body_height=0.15, period=1.0, velocity=0.46, crab_angle=0.0, dt=1/240):
-
         # link lengths
         self.l_1 = 0.05317
         self.l_2 = 0.10188
@@ -88,9 +87,8 @@ class SUPGController:
         inputs.append(neuron.getYPos())#/50) #uses y angle to ensure all servos on same leg move at same time
         inputs.append(0)
         #append 0 for all other supgs
-        for i in range(12):
-            inputs.append(0)
-
+        # for i in range(12):
+        #     inputs.append(0)
 
         activation = self.cppn.activate(inputs)
         offset = (activation[1] + 1)
@@ -107,15 +105,15 @@ class SUPGController:
         coordinates.append(neuron.getXPos())
         coordinates.append(neuron.getYPos())
         coordinates.append(neuron.getTimeCounter()) 
-        pos = 0
-        for output in cachedOutputs:
-            if neuron.ID() == pos:
-               pos +=1
-               coordinates.append(0)
-               continue
-            else:
-               coordinates.append(output)
-            pos +=1
+        # pos = 0
+        # for output in cachedOutputs:
+        #     if neuron.ID() == pos:
+        #        pos +=1
+        #        coordinates.append(0)
+        #        continue
+        #     else:
+        #        coordinates.append(output)
+        #     pos +=1
 
         activation = self.cppn.activate(coordinates)
 
@@ -132,7 +130,7 @@ class SUPGController:
             if neuron.getTimeCounter() >= 1:
                 neuron.setTimeCounter(0)
             elif neuron.getTimeCounter() >=0 and neuron.getTimeCounter() < 1:
-                neuron.setTimeCounter((neuron.getTimeCounter() + (1/15)))  #1/240
+                neuron.setTimeCounter((neuron.getTimeCounter() + (1/240)))  #1/240
     
     def IMU_feedback(self, measured_attitude):
             return
@@ -181,7 +179,6 @@ class SUPGController:
                         self.neuronList[i+1].setTimeCounter(1)
                     i +=2
 
-
          #only need SUPG output for neurons with timer above zero... i.e, legs with offset outside of value wont move on initial time step
             for neuron in self.neuronList:
                 if(neuron.getTimeCounter() >=0 and neuron.getTimeCounter() <=1):
@@ -197,7 +194,7 @@ class SUPGController:
 
             self.update()
 
-            self.supgOutputs = copy.deepcopy(outputs) # caching outputs for later use when coupling            
+            #self.supgOutputs = copy.deepcopy(outputs) # caching outputs for later use when coupling            
 
             #adding tibia output, which remains constant
             i = 2
