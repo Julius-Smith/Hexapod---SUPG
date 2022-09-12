@@ -26,13 +26,13 @@ leg_params = np.array(tripod_gait).reshape(6, 5)
 
 
 #read in pickl
-with open(r"C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\Pickles\SUPG_xor_cppn_testCSUPG0.pkl", 'rb') as f:
+with open(r"C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\Pickles\SUPG_xor_cppn_testCSUPG16.pkl", 'rb') as f:
     CPPN = pickle.load(f)
 
 #set up final controller and feed into sim
     leg = 5
-    broken =[1,2, 3]
-    brokenS = [1,2,3]
+    broken =[6,1] 
+    brokenS = [6,1]
     controller = SUPGController(CPPN, broken)
     simulator = Simulator(controller, follow=True, visualiser=True, collision_fatal=False, failed_legs=brokenS)
 
