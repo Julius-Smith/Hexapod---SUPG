@@ -37,6 +37,7 @@ def runTrial(pickleNo, dmgLegs):
     for t in np.arange(0, 5, step=simulator.dt):
         simulator.step()
 
+    #fitness is displacement from starting position
     fitness = math.sqrt(pow((simulator.base_pos()[0]),2) + pow((simulator.base_pos()[1]),2))   # distance travelled along x axis
         # Terminate Simulator
     simulator.terminate()
@@ -74,7 +75,7 @@ def run():
     return Results
 
 
-#set up data frame and all that jazz
+#set up data frame
 def setupFrame(filename, Scenarios):
     data = {
         "Trial 1" : Scenarios[0]

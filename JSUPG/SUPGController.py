@@ -27,11 +27,12 @@ class SUPGController:
         self.crab_angle = crab_angle
         self.body_height = body_height
         self.brokenLegs = brokenLegs
-        #set index for broken legs
+
+        #set index for broken legs. Index begins at 0, whereas leg numbers start at 1
         for i in range(len(self.brokenLegs)):
             self.brokenLegs[i] = self.brokenLegs[i] -1
 
-        #reshae values to correspond to appropriate SUPG
+        #reshape values to correspond to respective SUPG neuron
         self.brokenLegsR = []
         for i in self.brokenLegs:
             self.brokenLegsR.append(2*i)
@@ -55,7 +56,7 @@ class SUPGController:
                 #just the supgs for caching output
                 self.supgOutputs.append(np.radians(0))
                 self.supgOutputs.append(np.radians(90))
-            #otherwise, contiuye as normal
+            #otherwise, continue as normal
             else:
                 #all three servos
                 self.initialOutputs.append(0)
@@ -100,12 +101,10 @@ class SUPGController:
     #offsets are used to ensure the robot does not fire all legs at once on the initial angle request
     #offsets are discarded after 1st step
     def getOffset(self, neuron):
-        #potentially use compression value for x position
-        #self.cppn.reset()
         offset = 0
         inputs = []
         inputs.append(0)
-        inputs.append(neuron.getYPos())#/50) #uses y angle to ensure all servos on same leg move at same time
+        inputs.append(neuron.getYPos()) #uses y angle to ensure all servos on same leg move at same time
         inputs.append(0)
         #append 0 for all other supgs
         for i in range(12):
@@ -115,13 +114,13 @@ class SUPGController:
         offset = (activation[1] + 1)
       
         if (offset >= 0 and offset <=1 ):
-            return offset #return false
+            return offset 
         else:
-            return  1 #return true
+            return  1 
         
-    ##return output of individual 
+    #return output of individual SUPG
     def getSUPGActivation(self, neuron, cachedOutputs):
-        #self.cppn.reset()
+        
         coordinates = []
         coordinates.append(neuron.getXPos())
         coordinates.append(neuron.getYPos())
@@ -144,14 +143,13 @@ class SUPGController:
 
         return output
 
-    #update timer --> use after CPPN input has being called
-    # for future: map triggers to each leg --> wraps entire def in an IF
+    #update timer --> use after CPPN input has been requested
     def update(self):
         for neuron in self.neuronList:
             if neuron.getTimeCounter() >= 1:
                 neuron.setTimeCounter(0)
             elif neuron.getTimeCounter() >=0 and neuron.getTimeCounter() < 1:
-                neuron.setTimeCounter((neuron.getTimeCounter() + (1/240)))  #1/240
+                neuron.setTimeCounter((neuron.getTimeCounter() + (1/240))) 
     
     def IMU_feedback(self, measured_attitude):
             return
@@ -176,19 +174,19 @@ class SUPGController:
     def joint_angles(self, contact, t):
         outputs = []
 
-        #set up initial stnading position
+        #set up initial standing position
         if t == 0:
             return self.initialOutputs
         else:
     
             #set timer to offset to kickstart legs/avoid pronk
-            #legs where offset == true , remain at T zero
+            #legs where offset == true , remain at T = zero
             if(self.firstStep == False):
                 for neuron in self.neuronList:
                     neuron.setTimeCounter(self.getOffset(neuron))
-                    #if self.getOffset(neuron) == True: #has an offset
-                        #neuron.setTimeCounter(1.1) # set value outside of reference range. i.e., won't fire on first time step
+                    
                 self.firstStep = True
+
             #if first step is completele, use triggers 
             else:
                 if len(contact) > 0:
@@ -202,7 +200,7 @@ class SUPGController:
 
             #only need SUPG output for neurons with timer above zero... i.e, legs with offset outside of value wont move on initial time step
             for neuron in self.neuronList:
-                #if nueron in broken legs, dont get activation:
+                #if neuron is in broken legs, don't get activation, set angle to locked position:
                 if neuron.ID() in self.brokenLegsR or neuron.ID() -1 in self.brokenLegsR:
                     if neuron.ID() % 2 == 0:
                         outputs.append(np.radians(0))

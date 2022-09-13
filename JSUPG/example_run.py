@@ -12,10 +12,6 @@ import sys
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                      neat.DefaultSpeciesSet, neat.DefaultStagnation,
                      r'config_SUPG')  #C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\config_SUPG
-# def bipolarSig(x):
-#     return (1 - np.exp(-x)) / (1 + np.exp(-x))
-
-# config.genome_config.add_activation('bisig', bipolarSig)
 
 # radius, offset, step_height, phase, duty_factor
 tripod_gait = [	0.15, 0, 0.05, 0.5, 0.5, # leg 1
@@ -25,11 +21,10 @@ tripod_gait = [	0.15, 0, 0.05, 0.5, 0.5, # leg 1
 				0.15, 0, 0.05, 0.5, 0.5, # leg 5
 				0.15, 0, 0.05, 0.0, 0.5] # leg 6
 
-#parralel implementation
+#parallel implementation
 def evaluate_gaitP(genome, config):
      # Create CPPN from Genome and configuration file
-        cppn = neat.nn.FeedForwardNetwork.create(genome, config)
-        #cppn = neat.nn.RecurrentNetwork.create(genome,config)       
+        cppn = neat.nn.FeedForwardNetwork.create(genome, config)     
         
         leg_params = np.array(tripod_gait).reshape(6, 5)
 
@@ -56,6 +51,7 @@ def evaluate_gaitP(genome, config):
 
         return fitness
 
+#linear implementation
 def evaluate_gait(genomes, config, duration=5):
     for genome_id, genome in genomes:
         # Create CPPN from Genome and configuration file
@@ -92,11 +88,10 @@ def run(gens):
     # Add a stdout reporter to show progress in the terminal.
     p.add_reporter(neat.StdOutReporter(False))
 
-
-    ## running in parallel
+    # running in parallel
     pe =  neat.ParallelEvaluator(multiprocessing.cpu_count(), evaluate_gaitP)
 
-    # Run until a solution is found.
+    # Run until a solution is found
     #winner = p.run(evaluate_gait, gens)
 
     winner = p.run(pe.evaluate, gens)
@@ -127,6 +122,7 @@ if __name__ == "__main__":
     stats.save_genome_fitness(delimiter=',', filename='Output/genomeFitness/FitnessHistory' + fileNumber + '.csv')
     vz.plot_stats(stats, ylog=False, view=True, filename='Output/graphs/AverageFitness' + fileNumber + '.svg')
     vz.plot_species(stats, view=True, filename='Output/graphs/Speciation' + fileNumber + '.svg')
+    
     #create network with winning genome
     winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
 
