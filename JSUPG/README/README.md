@@ -19,7 +19,7 @@ The simulator class (JSUPG\mailer\hexapod\simulator.py) is used extensively with
 and is interacted with by the SUPGController class
 
 ## NEAT python:
-The controllers evolved in this project were done with the standard NEAT packages and frame, available:  https://github.com/CodeReclaimers/neat-python.git 
+The controllers evolved in this project were done with the standard NEAT packages and framework, available:  https://github.com/CodeReclaimers/neat-python.git 
 
 ## Evolving Controllers:
 The coupled SUPG controller and its supporting classes are spread between the following classes -->
