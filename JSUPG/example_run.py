@@ -11,7 +11,7 @@ import sys
 #configure neat for the SUPG CPPN
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                      neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                     r'config_SUPG')  #C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\config_SUPG
+                     r'JSUPG\config_SUPG')  #C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\config_SUPG
 
 # radius, offset, step_height, phase, duty_factor
 tripod_gait = [	0.15, 0, 0.05, 0.5, 0.5, # leg 1
@@ -30,13 +30,13 @@ def evaluate_gaitP(genome, config):
 
         # Set up controller
         try:
-           controller = SUPGController(cppn)
+           controller = SUPGController(cppn, [])
         except:
             
             return 0#, np.zeros(6)
             
         # Initialise Simulator
-        simulator = Simulator(controller=controller, visualiser=False, collision_fatal=True)
+        simulator = Simulator(controller=controller, visualiser=False, collision_fatal=True, failed_legs=[])
         # Step in simulator
         for t in np.arange(0, 5, step=simulator.dt):
             try:
@@ -115,8 +115,8 @@ if __name__ == "__main__":
     if not os.path.exists("Pickles"):
         os.mkdir("Pickles")
 
-    numRuns = int(sys.argv[1])
-    fileNumber = (sys.argv[2])
+    numRuns = 10000#int(sys.argv[1])
+    fileNumber = "test"#(sys.argv[2])
     winner, stats = run(numRuns)
 
     stats.save_genome_fitness(delimiter=',', filename='Output/genomeFitness/FitnessHistory' + fileNumber + '.csv')
