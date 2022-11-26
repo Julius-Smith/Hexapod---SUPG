@@ -1,6 +1,7 @@
 from mailer.hexapod.simulator import Simulator
 from SUPGController import SUPGController
 from BSUPGController import BSUPGController
+
 import neat
 import neat.nn
 import numpy as np
@@ -15,7 +16,7 @@ import math
 #chnage to config_BSUPG or coupled config_SUPG 
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                      neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                     r'config_SUPG')  #C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\config_SUPG
+                     r'config_BSUPG')  #C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\config_BSUPG
 
 # radius, offset, step_height, phase, duty_factor
 tripod_gait = [	0.15, 0, 0.05, 0.5, 0.5, # leg 1
@@ -35,7 +36,7 @@ def evaluate_gaitP(genome, config):
         # Set up controller
         #BSUPG or coupled SUPG
         try:
-           controller = SUPGController(cppn, [] )
+           controller = BSUPGController(cppn, [] )
         except:
             
             return 0#, np.zeros(6)
@@ -66,7 +67,7 @@ def evaluate_gait(genomes, config, duration=5):
 
         # Set up controller
         try:
-           controller = SUPGController(cppn)
+           controller = BSUPGController(cppn)
         except:
             return 0, np.zeros(6)
             
@@ -84,14 +85,18 @@ def evaluate_gait(genomes, config, duration=5):
         # Assign fitness to genome
         genome.fitness = fitness
 
-def run(gens):
+def run(gens, file):
     # Create the population, which is the top-level object for a NEAT run.
     p = neat.Population(config)
     
+    #checkpoint population:
+    #p = neat.Checkpointer.restore_checkpoint(r'Checkpoints\neat-checkpoint-TestEBSUPG17') #C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\Checkpoints\neat-checkpoint-TestEBSUPG17
     stats = neat.statistics.StatisticsReporter()
     p.add_reporter(stats)
     # Add a stdout reporter to show progress in the terminal.
     p.add_reporter(neat.StdOutReporter(False))
+    tempFilename = 'Checkpoints/neat-checkpoint-' + file
+    p.add_reporter(neat.Checkpointer(generation_interval=5000, time_interval_seconds=None, filename_prefix=tempFilename))
 
     # running in parallel
     pe =  neat.ParallelEvaluator(multiprocessing.cpu_count(), evaluate_gaitP)
@@ -120,9 +125,10 @@ if __name__ == "__main__":
     if not os.path.exists("Pickles"):
         os.mkdir("Pickles")
 
-    numRuns = int(sys.argv[1])
-    fileNumber = (sys.argv[2])
-    winner, stats = run(numRuns)
+    numRuns = 10#int(sys.argv[1])
+    fileNumber = 'blah'#(sys.argv[2])
+    checkpointFile = 'blah'#(sys.argv[3])
+    winner, stats = run(numRuns, checkpointFile)
 
     stats.save_genome_fitness(delimiter=',', filename='Output/genomeFitness/FitnessHistory' + fileNumber + '.csv')
     vz.plot_stats(stats, ylog=False, view=True, filename='Output/graphs/AverageFitness' + fileNumber + '.svg')

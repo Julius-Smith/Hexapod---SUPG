@@ -39,13 +39,15 @@
 
 import math
 import numpy as np
-# import multiprocessing
-from mpi4py.futures import MPIPoolExecutor
-
+import time
+import multiprocessing    # Comment
+import copy
+#from mpi4py.futures import MPIPoolExecutor    # Uncomment
 # from scipy.spatial import cKDTree : TODO -- faster?
 from sklearn.neighbors import KDTree
 
-from map_elites import common as cm
+from pymap_elites.map_elites import common as cm
+
 
 
 def __add_to_archive(s, centroid, archive, kdt):
@@ -71,11 +73,14 @@ def __evaluate(t):
     return cm.Species(z, desc, fit)
 
 # map-elites algorithm (CVT variant)
-def compute(dim_map, dim_x, f,
+def compute(dim_map, genomes, f,
             n_niches=1000,
             max_evals=1e5,
             params=cm.default_params,
             log_file=None,
+            archive_file = None,
+            archive_load_file = None,
+            start_index = 0,
             variation_operator=cm.variation):
     """CVT MAP-Elites
        Vassiliades V, Chatzilygeroudis K, Mouret JB. Using centroidal voronoi tessellations to scale up the multidimensional archive of phenotypic elites algorithm. IEEE Transactions on Evolutionary Computation. 2017 Aug 3;22(4):623-30.
@@ -84,43 +89,71 @@ def compute(dim_map, dim_x, f,
 
     """
     # setup the parallel processing pool
-    # num_cores = multiprocessing.cpu_count()
-    # pool = multiprocessing.Pool(num_cores)
-    pool = MPIPoolExecutor()
+    num_cores = multiprocessing.cpu_count()     # Comment
+    pool = multiprocessing.Pool(num_cores)     # Comment
+    #pool = MPIPoolExecutor()    # Uncomment
 
     # create the CVT
-    c = cm.cvt(n_niches, dim_map, params['cvt_samples'], params['cvt_use_cache'])
+    start_time = time.time()
+    c = cm.cvt(n_niches, dim_map,
+              params['cvt_samples'], params['cvt_use_cache'])
     kdt = KDTree(c, leaf_size=30, metric='euclidean')
     cm.__write_centroids(c)
+    print("Time Taken for centroid: ", time.time() - start_time)
 
     archive = {} # init archive (empty)
-    n_evals = 0 # number of evaluations since the beginning
+    n_evals = start_index # number of evaluations since the beginning
     b_evals = 0 # number evaluation since the last dump
 
     # main loop
+    ## Read in archive file and archive genomes if they exist
+    if (archive_load_file is not None):
+        with open(archive_load_file) as file:
+            line_count = 0
+            for line in file:
+                archive_val = line.split(' ')
+                fitness = float(archive_val[0])
+                #centroid = archive_val[1:7]
+                description = archive_val[7:13]
+                description = [float(x) for x in description]
+                x = genomes[line_count]
+                s = cm.Species(x = x, desc=description, fitness=fitness)
+                __add_to_archive(s, s.desc, archive, kdt)
+                line_count += 1
+
     while (n_evals < max_evals):
+
+        print(n_evals)
+        start_time = time.time()
         to_evaluate = []
         # random initialization
-        if len(archive) <= params['random_init'] * n_niches:
-            for i in range(0, params['random_init_batch']):
-                x = np.random.uniform(low=params['min'], high=params['max'], size=dim_x)
+        #if len(archive) <= params['random_init'] * n_niches:
+        if (n_evals == 0):
+            for i in range(0, len(genomes)):
+
+                # x = np.random.uniform(low=params['min'], high=params['max'], size=dim_x)     ## Where the map is initialised, this is where I would pass in the high performing gaits
+                x = genomes[i]
                 to_evaluate += [(x, f)]
         else:  # variation/selection loop
             keys = list(archive.keys())
             # we select all the parents at the same time because randint is slow
             rand1 = np.random.randint(len(keys), size=params['batch_size'])
-            rand2 = np.random.randint(len(keys), size=params['batch_size'])
+            print("rand1")
+            print(rand1)
+            #rand2 = np.random.randint(len(keys), size=params['batch_size'])
             for n in range(0, params['batch_size']):
                 # parent selection
                 x = archive[keys[rand1[n]]]
-                y = archive[keys[rand2[n]]]
+                #y = archive[keys[rand2[n]]]
                 # copy & add variation
-                z = variation_operator(x.x, y.x, params)
+                z = copy.deepcopy(x)
+                z = variation_operator(z.x)
                 to_evaluate += [(z, f)]
         # evaluation of the fitness for to_evaluate
-        s_list = cm.parallel_eval(__evaluate, to_evaluate, pool, params)
+        s_list = cm.parallel_eval(__evaluate, to_evaluate, pool, params)    ## Problem here
         # natural selection
         for s in s_list:
+            print("Adding to archive")
             __add_to_archive(s, s.desc, archive, kdt)
         # count evals
         n_evals += len(to_evaluate)
@@ -129,7 +162,7 @@ def compute(dim_map, dim_x, f,
         # write archive
         if b_evals >= params['dump_period'] and params['dump_period'] != -1:
             print("[{}/{}]".format(n_evals, int(max_evals)), end=" ", flush=True)
-            cm.__save_archive(archive, n_evals)
+            cm.__save_archive(archive, n_evals, archive_file)
             b_evals = 0
         # write log
         if log_file != None:
@@ -138,6 +171,6 @@ def compute(dim_map, dim_x, f,
                     fit_list.max(), np.mean(fit_list), np.median(fit_list),
                     np.percentile(fit_list, 5), np.percentile(fit_list, 95)))
             log_file.flush()
-    cm.__save_archive(archive, n_evals)
-    
+        print("Time taken for one batch: ", time.time() - start_time)
+    cm.__save_archive(archive, n_evals, archive_file)
     return archive

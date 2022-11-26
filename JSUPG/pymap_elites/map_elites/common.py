@@ -40,13 +40,19 @@
 
 import math
 import numpy as np
-# import multiprocessing
-from mpi4py.futures import MPIPoolExecutor
+import multiprocessing # Must comment
+#from mpi4py.futures import MPIPoolExecutor  # Must uncomment
 from pathlib import Path
 import sys
 import random
 from collections import defaultdict
 from sklearn.cluster import KMeans
+import neat
+import pickle
+
+config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
+                     neat.DefaultSpeciesSet, neat.DefaultStagnation,
+                     'NEATHex/config-feedforward')
 
 default_params = \
     {
@@ -92,8 +98,18 @@ def polynomial_mutation(x):
             delta_i = math.pow(2.0 * r[i], 1.0 / (eta_m + 1.0)) - 1.0
         else:
             delta_i = 1 - math.pow(2.0 * (1.0 - r[i]), 1.0 / (eta_m + 1.0))
-        y[i] = delta_i
+        y[i] += delta_i
     return y
+
+
+## Mutate genome using built in NEAT function
+def neatMutation(x):
+    x.mutate(config.genome_config)     ## Need to give in config file somewhere
+    return x
+
+def neatCrossOver(x, y):
+    z = neat.genome.configure_crossover(x, y, config.genome_config)     ## no idea if this is right
+    return z
 
 def sbx(x, y, params):
     '''
@@ -192,7 +208,7 @@ def cvt(k, dim, samples, cvt_use_cache=True):
 
     x = np.random.rand(samples, dim)
     k_means = KMeans(init='k-means++', n_clusters=k,
-                     n_init=1, n_jobs=-1, verbose=1)#,algorithm="full")
+                     n_init=1,verbose=1)#,algorithm="full")
     k_means.fit(x)
     __write_centroids(k_means.cluster_centers_)
 
@@ -202,25 +218,31 @@ def cvt(k, dim, samples, cvt_use_cache=True):
 def make_hashable(array):
     return tuple(map(float, array))
 
-
 def parallel_eval(evaluate_function, to_evaluate, pool, params):
     if params['parallel'] == True:
-        s_list = pool.map(evaluate_function, to_evaluate, chunksize=10)
+        s_list = pool.map(evaluate_function, to_evaluate)    # Comment
+        #s_list = pool.map(evaluate_function, to_evaluate, chunksize=10)  # Uncomment
     else:
         s_list = map(evaluate_function, to_evaluate)
     return list(s_list)
 
+
 # format: fitness, centroid, desc, genome \n
 # fitness, centroid, desc and x are vectors
-def __save_archive(archive, gen):
+def __save_archive(archive, gen, archive_file):
     def write_array(a, f):
         for i in a:
             f.write(str(i) + ' ')
-    filename = 'archive_' + str(gen) + '.dat'
+    filename = archive_file + str(gen) + '.dat'
+    filenamePickle = archive_file + '_genome' + str(gen) + '.pkl'
+    genomes = []
     with open(filename, 'w') as f:
         for k in archive.values():
             f.write(str(k.fitness) + ' ')
             write_array(k.centroid, f)
             write_array(k.desc, f)
-            write_array(k.x, f)
+            #write_array(k.x, f)
+            genomes += [k.x]
             f.write("\n")
+    with open(filenamePickle, 'wb') as output:
+        pickle.dump(genomes, output, pickle.HIGHEST_PROTOCOL)
