@@ -1,7 +1,7 @@
 import copy
 import math
 from mailer.hexapod.simulator import Simulator
-from SUPGController import SUPGController
+from BSUPGController import BSUPGController
 import neat
 import neat.nn
 import numpy as np
@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                      neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                     r'C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\config_SUPG')  #C:\Users\Dell\Documents\Shared Folder\Hexapod---SUPG\SUPG Julius\config_SUPG
+                     r'C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\config_BSUPG')  #C:\Users\Dell\Documents\Shared Folder\Hexapod---SUPG\SUPG Julius\config_SUPG
 
 # radius, offset, step_height, phase, duty_factor
 tripod_gait = [	0.15, 0, 0.05, 0.5, 0.5, # leg 1
@@ -25,20 +25,21 @@ leg_params = np.array(tripod_gait).reshape(6, 5)
 
 def runTrial(pickleNo, dmgLegs):
 
-    with open(r"C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\Pickles\SUPG_xor_cppn_testCSUPG" + str(pickleNo) + ".pkl", 'rb') as f:
+    with open(r"C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\Pickles_2\SUPG_xor_cppn_testEBSUPG" + str(pickleNo +1) + ".pkl", 'rb') as f:
         CPPN = pickle.load(f)
     
     cdl = copy.copy(dmgLegs)
     sdl = copy.copy(dmgLegs)
 
-    controller = SUPGController(CPPN, cdl)
+    controller = BSUPGController(CPPN, cdl)
     simulator = Simulator(controller, follow=True, visualiser=False, collision_fatal=False, failed_legs=sdl)
     
     for t in np.arange(0, 5, step=simulator.dt):
         simulator.step()
 
     #fitness is displacement from starting position
-    fitness = math.sqrt(pow((simulator.base_pos()[0]),2) + pow((simulator.base_pos()[1]),2))   # distance travelled along x axis
+    ##fitness = math.sqrt(pow((simulator.base_pos()[0]),2) + pow((simulator.base_pos()[1]),2))   # distance travelled along x axis
+    fitness = simulator.base_pos()[0]    
         # Terminate Simulator
     simulator.terminate()
 
@@ -111,6 +112,6 @@ def setupFrame(filename, Scenarios):
 if __name__ == "__main__":
     results = run()
     
-    filename = r"C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\SUPG_experiments\CSUPGBOX"
+    filename = r"C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\SUPG_experiments\EBSUPGBOX.csv"
 
     setupFrame(filename, results)

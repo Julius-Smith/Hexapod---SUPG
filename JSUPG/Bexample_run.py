@@ -90,16 +90,18 @@ def run(gens, file):
     p = neat.Population(config)
     
     #checkpoint population:
-    #p = neat.Checkpointer.restore_checkpoint(r'Checkpoints\neat-checkpoint-TestEBSUPG17') #C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\Checkpoints\neat-checkpoint-TestEBSUPG17
+    tempFilename = 'Checkpoints/neat-checkpoint-' + file
+    p = neat.Checkpointer.restore_checkpoint(tempFilename) #C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\Checkpoints\neat-checkpoint-TestEBSUPG17
     stats = neat.statistics.StatisticsReporter()
     p.add_reporter(stats)
     # Add a stdout reporter to show progress in the terminal.
     p.add_reporter(neat.StdOutReporter(False))
-    tempFilename = 'Checkpoints/neat-checkpoint-' + file
-    p.add_reporter(neat.Checkpointer(generation_interval=5000, time_interval_seconds=None, filename_prefix=tempFilename))
+    
+    #tempFilename = 'Checkpoints/neat-checkpoint-' + file
+    #p.add_reporter(neat.Checkpointer(generation_interval=5000, time_interval_seconds=None, filename_prefix=tempFilename))
 
     # running in parallel
-    pe =  neat.ParallelEvaluator(multiprocessing.cpu_count(), evaluate_gaitP)
+    pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), evaluate_gaitP)
 
     # Run until a solution is found
     #winner = p.run(evaluate_gait, gens)
@@ -125,9 +127,9 @@ if __name__ == "__main__":
     if not os.path.exists("Pickles"):
         os.mkdir("Pickles")
 
-    numRuns = 10#int(sys.argv[1])
-    fileNumber = 'blah'#(sys.argv[2])
-    checkpointFile = 'blah'#(sys.argv[3])
+    numRuns = int(sys.argv[1])
+    fileNumber = (sys.argv[2])
+    checkpointFile = (sys.argv[3])
     winner, stats = run(numRuns, checkpointFile)
 
     stats.save_genome_fitness(delimiter=',', filename='Output/genomeFitness/FitnessHistory' + fileNumber + '.csv')

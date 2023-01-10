@@ -1,6 +1,7 @@
 #SUPG Controller Class
 from mailer.hexapod.simulator import Simulator
 from SUPGController import SUPGController
+from BSUPGController import BSUPGController 
 import neat
 import neat.nn
 import numpy as np
@@ -25,7 +26,7 @@ leg_params = np.array(tripod_gait).reshape(6, 5)
 
 
 #read in pickl
-with open(r"C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\SUPG_xor_cppn_testTESTECSUPG1.pkl", 'rb') as f:
+with open(r"C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\Pickles\SUPG_xor_cppn_testECSUPG15.pkl", 'rb') as f:
     CPPN = pickle.load(f)
 
     #set up final controller and feed into sim

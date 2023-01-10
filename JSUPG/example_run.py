@@ -11,7 +11,7 @@ import os
 import sys
 import math
 
-#configure neat for the SUPG CPPN\
+#configure neat for the SUPG CPPN
 #chnage to config_BSUPG or coupled config_SUPG 
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                      neat.DefaultSpeciesSet, neat.DefaultStagnation,
