@@ -1,7 +1,7 @@
 import csv
 
 for i in range(10,20):
-    file = open(r'C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\Output\genomeFitness\FitnessHistoryEBSUPG' + str(i+1) + '.csv')
+    file = open(r'FitnessHistoryEBSUPG' + str(i+1) + '.csv')
 
     csvreader = csv.reader(file)
     
@@ -12,7 +12,7 @@ for i in range(10,20):
     for row in rows:
         row[0] = str(float(row[0])/5.9030470443880985)    
 
-    with open(r'C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\OutputNormalised\genomeFitness\FitnessHistoryEBSUPG' + str(i+1) + '.csv', 'w', newline='') as file2:
+    with open(r'genomeFitness\FitnessHistoryEBSUPG' + str(i+1) + '.csv', 'w', newline='') as file2:
         writer = csv.writer(file2)
         writer.writerows(rows)
 

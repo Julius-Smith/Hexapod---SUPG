@@ -11,7 +11,7 @@ import multiprocessing
 #create NEAT configuration
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                      neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                     r'C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\config_SUPG')  #C:\Users\Dell\Documents\Shared Folder\Hexapod---SUPG\SUPG Julius\config_SUPG
+                     r'config_SUPG')  
 
 
 # radius, offset, step_height, phase, duty_factor
@@ -26,7 +26,7 @@ leg_params = np.array(tripod_gait).reshape(6, 5)
 
 
 #read in pickl
-with open(r"C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\Pickles\SUPG_xor_cppn_testECSUPG15.pkl", 'rb') as f:
+with open(r"Pickles\SUPG_xor_cppn_testECSUPG19.pkl", 'rb') as f:
     CPPN = pickle.load(f)
 
     #set up final controller and feed into sim

@@ -16,7 +16,7 @@ import math
 #chnage to config_BSUPG or coupled config_SUPG 
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                      neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                     r'config_BSUPG')  #C:\Users\Dell\Documents\University\Unversity2022\Thesis\Hexapod Code\Hexapod---SUPG\JSUPG\config_BSUPG
+                     r'config_BSUPG')  
 
 # radius, offset, step_height, phase, duty_factor
 tripod_gait = [	0.15, 0, 0.05, 0.5, 0.5, # leg 1
